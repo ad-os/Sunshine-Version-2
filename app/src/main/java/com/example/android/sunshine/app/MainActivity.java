@@ -28,16 +28,19 @@ import java.util.Arrays;
 
 
 public class MainActivity extends ActionBarActivity {
-
+    private final String FORECASTFRAGMENT_TAG = "FFTAG";
+    private final String LOG_TAG = MainActivity.class.getSimpleName();
+    private String mLocation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new ForecastFragment())
+                    .add(R.id.container, new ForecastFragment(), FORECASTFRAGMENT_TAG)
                     .commit();
         }
+        mLocation = Utility.getPreferredLocation(this);
     }
 
     @Override
@@ -45,6 +48,20 @@ public class MainActivity extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String location = Utility.getPreferredLocation(this);
+        if (location != mLocation) {
+            ForecastFragment ff = (ForecastFragment)getSupportFragmentManager()
+                    .findFragmentByTag(FORECASTFRAGMENT_TAG);
+            if (ff != null) {
+                ff.onLocationChanged();
+            }
+            mLocation = location;
+        }
     }
 
     @Override
@@ -59,18 +76,21 @@ public class MainActivity extends ActionBarActivity {
             startActivity(intent);
             return true;
         } else if (id == R.id.map_settings) {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-            String location = sharedPref.getString(
-                    getString(R.string.pref_location_key),
-                    getString(R.string.pref_location_default));
-            Uri geoLocation = Uri.parse("geo:0,0?q=").buildUpon().appendQueryParameter("q", location).build();
-            intent.setData(geoLocation);
-            if (intent.resolveActivity(getPackageManager()) != null) {
-                startActivity(intent);
-            }
+            openPreferredLocationInMap();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void openPreferredLocationInMap() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        String location = Utility.getPreferredLocation(this);
+        Uri geoLocation = Uri.parse("geo:0,0?q=").buildUpon().appendQueryParameter("q", location).build();
+        intent.setData(geoLocation);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        } else {
+            Log.d(LOG_TAG, "Couldn't call " + location + ", no receiving apps installed!");
+        }
     }
 
 }

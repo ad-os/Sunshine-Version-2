@@ -11,7 +11,9 @@
         android:theme="@style/AppTheme">
         <provider
             android:authorities="com.example.android.sunshine.app"
-            android:name=".data.WeatherProvider"/>
+            android:name=".data.WeatherProvider"
+            android:exported="true"
+            android:permission="com.myapp.LICENSE_TO_KILL"/>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
@@ -38,5 +40,9 @@
                 android:value="com.example.android.sunshine.app.MainActivity"/>
         </activity>
     </application>
-
+    
+    <permission
+        android:name="com.myapp.LICENSE_TO_KILL"
+        android:protectionLevel="dangerous"
+        android:label="LICENSE TO KILL"/>
 </manifest>
