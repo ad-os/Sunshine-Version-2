@@ -33,6 +33,7 @@ public class MainActivity extends ActionBarActivity {
     private String mLocation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mLocation = Utility.getPreferredLocation(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
@@ -40,7 +41,6 @@ public class MainActivity extends ActionBarActivity {
                     .add(R.id.container, new ForecastFragment(), FORECASTFRAGMENT_TAG)
                     .commit();
         }
-        mLocation = Utility.getPreferredLocation(this);
     }
 
     @Override
@@ -54,7 +54,11 @@ public class MainActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
         String location = Utility.getPreferredLocation(this);
-        if (location != mLocation) {
+        Log.d("onResumeb", location);
+        Log.d("onResumeb", mLocation);
+        if (location != null && !location.equals(mLocation)) {
+            Log.d("onResume", location);
+            Log.d("onResume", mLocation);
             ForecastFragment ff = (ForecastFragment)getSupportFragmentManager()
                     .findFragmentByTag(FORECASTFRAGMENT_TAG);
             if (ff != null) {

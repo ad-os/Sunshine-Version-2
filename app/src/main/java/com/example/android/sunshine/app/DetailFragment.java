@@ -1,4 +1,4 @@
-package com.example.android.sunshine.app.data;
+package com.example.android.sunshine.app;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -20,8 +20,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.android.sunshine.app.R;
-import com.example.android.sunshine.app.Utility;
+import com.example.android.sunshine.app.data.WeatherContract;
 
 /**
  * Created by adhyan on 16/1/16.
