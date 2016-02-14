@@ -81,22 +81,8 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
             return true;
-        } else if (id == R.id.map_settings) {
-            openPreferredLocationInMap();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public void openPreferredLocationInMap() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        String location = Utility.getPreferredLocation(this);
-        Uri geoLocation = Uri.parse("geo:0,0?q=").buildUpon().appendQueryParameter("q", location).build();
-        intent.setData(geoLocation);
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(intent);
-        } else {
-            Log.d(LOG_TAG, "Couldn't call " + location + ", no receiving apps installed!");
-        }
     }
 
     @Override
