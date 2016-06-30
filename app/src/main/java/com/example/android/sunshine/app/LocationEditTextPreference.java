@@ -12,9 +12,6 @@ import android.util.AttributeSet;
 import android.widget.Button;
 import android.widget.EditText;
 
-/**
- * Created by adhyan on 6/12/16.
- */
 public class LocationEditTextPreference extends EditTextPreference {
     static final private int DEFAULT_MINIMUM_LOCATION_LENGTH = 2;
     private int mMinLength;
