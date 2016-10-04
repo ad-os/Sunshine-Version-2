@@ -138,6 +138,18 @@ public class Utility {
         return context.getString(R.string.format_temperature, temp);
     }
 
+    public static String formatTemperature(Context context, double temperature) {
+        // Data stored in Celsius by default.  If user prefers to see in Fahrenheit, convert
+        // the values here.
+        String suffix = "\u00B0";
+        if (!isMetric(context)) {
+            temperature = (temperature * 1.8) + 32;
+        }
+
+        // For presentation, assume the user doesn't care about tenths of a degree.
+        return String.format(context.getString(R.string.format_temperature), temperature);
+    }
+
     public static String getFormattedWind(Context context, float windSpeed, float degrees) {
         int windFormat;
         if (Utility.isMetric(context)) {
@@ -485,6 +497,37 @@ public class Utility {
                 return context.getString(R.string.condition_unknown, weatherId);
         }
         return context.getString(stringId);
+    }
+
+    /**
+     * Helper method to convert the database representation of the date into something to display
+     * to users.  As classy and polished a user experience as "20140102" is, we can do better.
+     *
+     * @param context Context to use for resource localization
+     * @param dateInMillis The date in milliseconds
+     * @return a user-friendly representation of the date.
+     */
+    public static String getFullFriendlyDayString(Context context, long dateInMillis) {
+
+        String day = getDayName(context, dateInMillis);
+        int formatId = R.string.format_full_friendly_date;
+        return String.format(context.getString(
+                formatId,
+                day,
+                getFormattedMonthDay(context, dateInMillis)));
+    }
+
+    /**
+     * Helper method to return whether or not Sunshine is using local graphics.
+     *
+     * @param context Context to use for retrieving the preference
+     * @return true if Sunshine is using local graphics, false otherwise.
+     */
+    public static boolean usingLocalGraphics(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String sunshineArtPack = context.getString(R.string.pref_art_pack_sunshine);
+        return prefs.getString(context.getString(R.string.pref_art_pack_key),
+                sunshineArtPack).equals(sunshineArtPack);
     }
 
 }

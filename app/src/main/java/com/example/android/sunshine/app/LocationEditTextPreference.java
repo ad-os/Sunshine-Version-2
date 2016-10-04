@@ -25,7 +25,8 @@ public class LocationEditTextPreference extends EditTextPreference {
                 0
         );
         try {
-            mMinLength = a.getInteger(R.styleable.LocationEditTextPreference_minLength, DEFAULT_MINIMUM_LOCATION_LENGTH);
+            mMinLength = a.getInteger(R.styleable.LocationEditTextPreference_minLength,
+                    DEFAULT_MINIMUM_LOCATION_LENGTH);
         } finally {
             a.recycle();
         }
