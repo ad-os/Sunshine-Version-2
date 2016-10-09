@@ -11,7 +11,6 @@ import android.support.v7.widget.ShareActionProvider;
 
 public class DetailActivity extends AppCompatActivity {
 
-    private ShareActionProvider mShareActionProvider;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
