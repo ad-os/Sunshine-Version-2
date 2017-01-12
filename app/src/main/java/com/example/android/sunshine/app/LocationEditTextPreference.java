@@ -1,5 +1,6 @@
 package com.example.android.sunshine.app;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -9,8 +10,17 @@ import android.preference.EditTextPreference;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 public class LocationEditTextPreference extends EditTextPreference {
     static final private int DEFAULT_MINIMUM_LOCATION_LENGTH = 2;
@@ -30,6 +40,34 @@ public class LocationEditTextPreference extends EditTextPreference {
         } finally {
             a.recycle();
         }
+
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(getContext());
+        if (resultCode == ConnectionResult.SUCCESS){
+            setWidgetLayoutResource(R.layout.pref_current_location);
+        }
+    }
+
+    @Override
+    protected View onCreateView(final ViewGroup parent) {
+        final View view =  super.onCreateView(parent);
+        View currentLocation = view.findViewById(R.id.current_location);
+        currentLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Toast.makeText(getContext(), "Woo!", Toast.LENGTH_LONG).show();
+                Context context = getContext();
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                Activity settingsActivity = (Activity) context;
+
+                try {
+                    settingsActivity.startActivityForResult(builder.build((Activity) context), SettingsActivity.PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesNotAvailableException | GooglePlayServicesRepairableException e) {
+
+                }
+            }
+        });
+        return view;
     }
 
     @Override

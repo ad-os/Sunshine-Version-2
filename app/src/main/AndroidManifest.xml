@@ -52,6 +52,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBixDBIAlqaVPGy6PTLEaoktqrrMJN43tw"/>
         <activity
             android:name=".DetailActivity"
             android:label="@string/title_activity_detail"
@@ -128,6 +131,17 @@
             android:name="com.example.android.sunshine.app.gcm.RegistrationIntentService"
             android:exported="false" >
         </service>
+        <receiver
+            android:name=".widget.TodayWidgetProvider"
+            android:label="@string/title_widget_today">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="com.example.android.sunshine.app.ACTION_DATA_UPDATED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info_today"/>
+        </receiver>
     </application>
 
 </manifest>
